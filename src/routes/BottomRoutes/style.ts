@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   },
   tabBar: {
     position: "absolute",
-    bottom: 30,
+    bottom: 50,
     marginLeft: 20,
     marginRight: 60,
     backgroundColor: "#111", // preto
@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 0,
     width: "auto",
     paddingHorizontal: 10,
+    height: 70
   },
   tabBarDiv: {
     flexDirection: "row",
