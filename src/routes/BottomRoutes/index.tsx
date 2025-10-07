@@ -4,35 +4,45 @@ import { DashScreen } from "@/app/screens/dash";
 import { HomeScreen } from "@/app/screens/home";
 import { UserScreen } from "@/app/screens/user";
 import { styles } from "./style";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createStaticNavigation } from "@react-navigation/native";
+import { colors } from "@/utils/color.utils";
+
+// function tabBarButton({ accessibilityState, onPress, label, icon }) {}
 
 const Tab = createBottomTabNavigator({
   screenOptions: ({ route, navigation, theme }) => ({
-    tabBarIcon({ color, focused, size }) {
-      let icon: "home" | "bar-chart" | "person" = "home";
-      switch (route.name) {
-        case "home":
-          icon = "home";
-          break;
-        case "dash":
-          icon = "bar-chart";
-          break;
-        case "user":
-          icon = "person";
-          break;
-      }
-      return <Ionicons name={icon} size={size} color={color} />;
-    },
-    tabBarLabel(props) {
-      return <Text>{props.children}</Text>;
-    },
-    tabBarButton(props) {
+    tabBarStyle: styles.tabBar,
+    tabBarButton: (props) => {
+      const state = navigation.getState();
+      const isSelected = state.routes[state.index].name === route.name;
+      const icon = () => {
+        if (route.name == "home") return "home";
+        if (route.name == "dash") return "bar-chart";
+        else return "person";
+      };
+      const tabBarText = isSelected
+        ? styles.tabBarTextSelected
+        : styles.tabBarText;
+
+      const tabBarDiv = isSelected
+        ? styles.tabBarDivSelected
+        : styles.tabBarDiv;
       return (
-        <View style={{ gap: 10, backgroundColor: "black" }}>
-          <Text style={{ color: "white" }}>Cachorro</Text>
-        </View>
+        <TouchableOpacity
+          onPress={props.onPress}
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View style={tabBarDiv}>
+            <Ionicons name={icon()} size={20} color={colors.branco} />
+            <Text style={tabBarText}>{route.name}</Text>
+          </View>
+        </TouchableOpacity>
       );
     },
   }),
@@ -43,47 +53,3 @@ const Tab = createBottomTabNavigator({
   },
 });
 export const Navigation = createStaticNavigation(Tab);
-// export function ButtonStackRoutes() {
-//   return (
-//     <Tab.Navigator
-//       screenOptions={({ route }) => ({
-//         headerStyle: styles.header,
-//         tabBarStyle: styles.tabBar,
-//         tabBarLabelPosition: "beside-icon",
-//         tabBarShowLabel: false,
-//         tabBarIcon: ({ color, focused, size }) => {
-//           let icon!: "home" | "bar-chart" | "person";
-//           switch (route.name) {
-//             case "home":
-//               icon = "home";
-//               break;
-//             case "dash":
-//               icon = "bar-chart";
-//               break;
-//             case "user":
-//               icon = "person";
-//               break;
-//           }
-//           if (focused) {
-//             return (
-//               <View style={styles.tabBarIconDiv}>
-//                 <Ionicons name={icon} color={"white"} size={size} />
-//                 <Text style={{ color: "white" }}>{route.name}</Text>
-//               </View>
-//             );
-//           }
-
-//           return (
-//             <View style={{ flexDirection: "row" }}>
-//               <Ionicons name={icon} color={"white"} size={size} />
-//             </View>
-//           );
-//         },
-//       })}
-//     >
-//       <Tab.Screen name="home" component={HomeScreen}></Tab.Screen>
-//       <Tab.Screen name="dash" component={DashScreen}></Tab.Screen>
-//       <Tab.Screen name="user" component={UserScreen}></Tab.Screen>
-//     </Tab.Navigator>
-//   );
-// }

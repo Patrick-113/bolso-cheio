@@ -3,8 +3,9 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.gray,
-    paddingHorizontal: 20,
+    backgroundColor: colors.brancoLight,
+    height: 50,
+    width: "auto",
+    borderRadius: 8,
   },
 });
